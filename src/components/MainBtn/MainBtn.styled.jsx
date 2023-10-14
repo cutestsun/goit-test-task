@@ -11,7 +11,7 @@ export const Button = styled.button`
   padding: 14px;
   color: ${colors.mainBtnText};
   background-color: ${({ "data-followed": followed }) =>
-    followed ? colors.secondaryBtnBg : colors.mainBtnBg};
+    followed ? colors.mainActiveBtnBg : colors.mainBtnBg};
   min-width: 196px;
   border-radius: 10.3px;
   box-shadow: 0px 3.43693px 3.43693px rgba(0, 0, 0, 0.25);

@@ -11,10 +11,3 @@ export const List = styled.ul`
     grid-template-columns: repeat(1, 1fr);
   }
 `;
-
-export const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  row-gap: 40px;
-`;

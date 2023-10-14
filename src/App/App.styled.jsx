@@ -10,4 +10,8 @@ export const AppWrapper = styled.div`
     rgba(206, 118, 236, 1) 50%,
     rgba(235, 216, 255, 1) 100%
   );
+
+  @media screen and (min-width: 836px) {
+    padding: 32px;
+  }
 `;

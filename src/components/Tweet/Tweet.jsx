@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
-
 import {
   Avatar,
   AvatarWrapper,
@@ -13,16 +12,16 @@ import {
   TweetWrapper,
   StatsItem,
 } from "./Tweet.styled";
-import { Logo } from "../Logo/Logo";
 import { AvatarBorder } from "../AvatarBorder/AvatarBorder";
-import { MainBtn } from "../MainBtn/MainBtn";
+import { FollowIcon, UnfollowIcon } from "../Icons/Icons";
 import { updateUser } from "../../services/api";
+import { MainBtn } from "../MainBtn/MainBtn";
+import { Loader } from "../Loader/Loader";
+import { Logo } from "../Logo/Logo";
 import picture from "src/img/picture.png";
 import picture2x from "src/img/picture@2x.png";
 import picture3x from "src/img/picture@3x.png";
 import avatarPlaceholder from "src/img/avatar-placeholder.jpg";
-import { FollowIcon, UnfollowIcon } from "../Icons/Icons";
-import { Loader } from "../Loader/Loader";
 
 export const Tweet = ({
   id,

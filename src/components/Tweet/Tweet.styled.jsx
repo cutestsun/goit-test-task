@@ -11,8 +11,7 @@ export const TweetWrapper = styled.li`
     #4b2a99 78.99%
   );
   box-shadow: -2.5777px 6.87386px 20.62157px 0px rgba(0, 0, 0, 0.23);
-
-  /* max-width: 380px; */
+  max-width: 380px;
 `;
 
 export const LogoWrapper = styled.div`

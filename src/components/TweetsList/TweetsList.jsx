@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { HiChevronLeft } from "react-icons/hi";
 import { Tweet } from "../Tweet/Tweet";
 import { List, Wrapper } from "./TweetsList.styled";
 import { getAllUsers } from "../../services/api";
 import { updateArray } from "../../helpers/updateArray";
-import { LoadMoreBtn } from "../LoadMoreBtn/LoadMoreBtn";
+import { SecondaryBtn } from "../SecondaryBtn/SecondaryBtn";
+import { Loader } from "../Loader/Loader";
+import { Link } from "react-router-dom";
+import { useResize } from "../../hooks/useResize";
 
 const STORAGE_KEY = import.meta.env.VITE_STORAGE_KEY;
-const ITEMS_PER_PAGE = 3;
 
 export const TweetsList = () => {
   const [users, setUsers] = useState([]);
@@ -15,12 +18,19 @@ export const TweetsList = () => {
     () => JSON.parse(localStorage.getItem(STORAGE_KEY)) ?? []
   );
   const [currentPage, setCurrentPage] = useState(2);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { width } = useResize();
+  const ITEMS_PER_PAGE = width < 1668 ? 3 : width < 1252 ? 2 : 4;
 
   useEffect(() => {
-    getAllUsers()
-      .then((data) => {
-        setUsers(data);
-        const newFollowedUsers = data.map((item) => ({
+    const getUsers = async () => {
+      try {
+        const users = await getAllUsers();
+
+        setUsers(users);
+
+        const newFollowedUsers = users.map((item) => ({
           id: item.id,
           followed: false,
         }));
@@ -33,10 +43,15 @@ export const TweetsList = () => {
         setFollowedUsers(resultFollowedUsers);
 
         localStorage.setItem(STORAGE_KEY, JSON.stringify(resultFollowedUsers));
-      })
-      .catch(() =>
-        toast.error("Something went wrong. Please try again later.")
-      );
+      } catch (error) {
+        setError(error);
+        toast.error("Something went wrong. Please try again later.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    getUsers();
   }, []);
 
   const updateFollowing = (id, followed) => {
@@ -61,22 +76,34 @@ export const TweetsList = () => {
 
   return (
     <Wrapper>
+      <Link to="/">
+        <SecondaryBtn>
+          <HiChevronLeft size={26} />
+          Back
+        </SecondaryBtn>
+      </Link>
       <List>
-        {renderedUsers.map(({ id, user, tweets, followers, avatar }, index) => (
-          <Tweet
-            id={id}
-            key={id}
-            user={user}
-            followers={followers}
-            tweets={tweets}
-            avatar={avatar}
-            followed={followedUsers[index].followed}
-            updateFollowing={updateFollowing}
-          />
-        ))}
+        {isLoading && <Loader />}
+
+        {!isLoading &&
+          !error &&
+          renderedUsers.map(
+            ({ id, user, tweets, followers, avatar }, index) => (
+              <Tweet
+                id={id}
+                key={id}
+                user={user}
+                followers={followers}
+                tweets={tweets}
+                avatar={avatar}
+                followed={followedUsers[index].followed}
+                updateFollowing={updateFollowing}
+              />
+            )
+          )}
       </List>
       {renderedUsers.length < users.length && (
-        <LoadMoreBtn onClick={loadMore}>Load More</LoadMoreBtn>
+        <SecondaryBtn onClick={loadMore}>Load More</SecondaryBtn>
       )}
     </Wrapper>
   );

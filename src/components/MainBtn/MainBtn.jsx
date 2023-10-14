@@ -1,6 +1,6 @@
-import { Button } from "./FollowBtn.styled";
+import { Button } from "./MainBtn.styled";
 
-export const FollowBtn = ({ followed = false, followUser, unfollowUser }) => {
+export const MainBtn = ({ followed = false, followUser, unfollowUser }) => {
   return (
     <Button
       data-followed={followed}

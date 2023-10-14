@@ -2,11 +2,16 @@ import { createGlobalStyle } from "styled-components";
 import { colors } from "../utils/variables";
 
 export const GlobalStyles = createGlobalStyle`
+  html, body, #root {
+    height: 100%;
+  }
+
   body {
     font-family: "Montserrat", sans-serif;
     font-weight: 500;
     font-size: 20px;
     color: ${colors.mainText};
+    min-width: 320px;
   }
 
   h1,
@@ -43,6 +48,7 @@ export const GlobalStyles = createGlobalStyle`
 
   .Toastify__toast{
     font-family: inherit;
+    margin-bottom: 16px;
   }
 
   

@@ -15,13 +15,14 @@ import {
 } from "./Tweet.styled";
 import { Logo } from "../Logo/Logo";
 import { AvatarBorder } from "../AvatarBorder/AvatarBorder";
-import { FollowBtn } from "../FollowBtn/FollowBtn";
+import { MainBtn } from "../MainBtn/MainBtn";
 import { updateUser } from "../../services/api";
 import picture from "src/img/picture.png";
 import picture2x from "src/img/picture@2x.png";
 import picture3x from "src/img/picture@3x.png";
 import avatarPlaceholder from "src/img/avatar-placeholder.jpg";
 import { FollowIcon, UnfollowIcon } from "../Icons/Icons";
+import { Loader } from "../Loader/Loader";
 
 export const Tweet = ({
   id,
@@ -34,6 +35,7 @@ export const Tweet = ({
 }) => {
   const [followed, setFollowed] = useState(initialFollowed);
   const [followers, setFollowers] = useState(initialFollowers);
+  const [isLoading, setIsLoading] = useState(false);
 
   const followUser = async () => {
     const updatedData = {
@@ -45,7 +47,12 @@ export const Tweet = ({
     };
 
     try {
+      setIsLoading(true);
+
       await updateUser(id, updatedData);
+
+      setIsLoading(false);
+
       toast.success(`You have successfully followed to ${user}`, {
         icon: () => <FollowIcon />,
       });
@@ -67,7 +74,12 @@ export const Tweet = ({
     };
 
     try {
+      setIsLoading(true);
+
       await updateUser(id, updatedData);
+
+      setIsLoading(false);
+
       toast.success(`You have successfully unfollowed from ${user}`, {
         icon: () => <UnfollowIcon />,
       });
@@ -80,35 +92,39 @@ export const Tweet = ({
   };
 
   return (
-    <TweetWrapper>
-      <LogoWrapper>
-        <Logo />
-      </LogoWrapper>
-      <ImageWrapper>
-        <Image
-          src={picture}
-          srcSet={`${picture} 1x, ${picture2x} 2x, ${picture3x}3x`}
-        />
-      </ImageWrapper>
+    <>
+      {isLoading && <Loader />}
+      <TweetWrapper>
+        <LogoWrapper>
+          <Logo />
+        </LogoWrapper>
+        <ImageWrapper>
+          <Image
+            src={picture}
+            srcSet={`${picture} 1x, ${picture2x} 2x, ${picture3x}3x`}
+            loading="lazy"
+          />
+        </ImageWrapper>
 
-      <SeparatorWrapper>
-        <Separator />
-        <AvatarWrapper>
-          <AvatarBorder />
-          <Avatar src={avatar || avatarPlaceholder} />
-        </AvatarWrapper>
-      </SeparatorWrapper>
-      <StatsWrapper>
-        <StatsItem>{tweets} tweets</StatsItem>
-        <StatsItem>
-          {new Intl.NumberFormat().format(followers)} followers
-        </StatsItem>
-        <FollowBtn
-          followed={followed}
-          followUser={followUser}
-          unfollowUser={unfollowUser}
-        />
-      </StatsWrapper>
-    </TweetWrapper>
+        <SeparatorWrapper>
+          <Separator />
+          <AvatarWrapper>
+            <AvatarBorder />
+            <Avatar src={avatar || avatarPlaceholder} loading="lazy" />
+          </AvatarWrapper>
+        </SeparatorWrapper>
+        <StatsWrapper>
+          <StatsItem>{tweets} tweets</StatsItem>
+          <StatsItem>
+            {new Intl.NumberFormat().format(followers)} followers
+          </StatsItem>
+          <MainBtn
+            followed={followed}
+            followUser={followUser}
+            unfollowUser={unfollowUser}
+          />
+        </StatsWrapper>
+      </TweetWrapper>
+    </>
   );
 };

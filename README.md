@@ -16,13 +16,12 @@ Welcome to the "Tweets"! This project showcases your web development and interac
 
 The following technologies were used to create this project:
 
-– JavaScript
-– React
-– React Router
-– Styled Components
-– MockAPI
+- JavaScript
+- React
+- React Router
+- Styled Components
+- MockAPI
 
 ## Project Launch
 
 To see the web application in action, visit the following link: [Tweets](https://cutestsun.github.io/goit-test-task/)
-

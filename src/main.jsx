@@ -9,7 +9,7 @@ import "modern-normalize/modern-normalize.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter basename="/goit-test-task/">
+    <BrowserRouter basename="/test-task/">
       <App />
       <GlobalStyles />
       <ToastContainer position="top-right" autoClose={3000} />
